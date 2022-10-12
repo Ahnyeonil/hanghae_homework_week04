@@ -1,0 +1,22 @@
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+# mariadb
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/test?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+
+#logging:
+#  level:
+#    root: DEBUG
+
+#jwt:
+#  header: Authorization
+#  secret: 7JWI7Jew7J287Leo7JeF6rKw7Zi866Gc65iQMeuTse2VmOqzoOyLtuuLpA==
+#  token-validity-in-seconds: 86400
