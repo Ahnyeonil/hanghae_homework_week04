@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class CommentDto {
+public class CommentRequestDto {
 
     private long id;
 
@@ -24,11 +24,9 @@ public class CommentDto {
 
     private LocalDateTime modifiedAt;
 
-    public CommentDto(Comment comment) {
+    public CommentRequestDto(Comment comment) {
         this.id = comment.getId();
         this.comment = comment.getComment();
-        this.boardId = comment.getBoardId();
-        this.nickname = comment.getNickname();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
     }

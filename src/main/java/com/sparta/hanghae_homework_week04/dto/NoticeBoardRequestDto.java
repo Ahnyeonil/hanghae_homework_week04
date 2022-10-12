@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class NoticeBoardDto {
+public class NoticeBoardRequestDto {
 
     private Long id;
     private String title;
@@ -19,7 +19,7 @@ public class NoticeBoardDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public NoticeBoardDto(NoticeBoard noticeboard) {
+    public NoticeBoardRequestDto(NoticeBoard noticeboard) {
         this.id = noticeboard.getId();
         this.title = noticeboard.getTitle();
         this.author = noticeboard.getAuthor();

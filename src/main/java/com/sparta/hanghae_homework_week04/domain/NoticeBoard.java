@@ -1,6 +1,6 @@
 package com.sparta.hanghae_homework_week04.domain;
 
-import com.sparta.hanghae_homework_week04.dto.NoticeBoardDto;
+import com.sparta.hanghae_homework_week04.dto.NoticeBoardRequestDto;
 import com.sparta.hanghae_homework_week04.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +9,12 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "notice_boards")
 @NoArgsConstructor
+@Table(name = "notice_boards")
 public class NoticeBoard extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String title;
@@ -22,13 +22,14 @@ public class NoticeBoard extends Timestamped {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name="nickname")
-    private User nickname;
+    @JoinColumn(name="user_id")
+    private User user;
 
-    public NoticeBoard(NoticeBoardDto noticeBoardDto) {
-        this.title = noticeBoardDto.getTitle();
-        this.author = noticeBoardDto.getAuthor();
-        this.content = noticeBoardDto.getContent();
+    public NoticeBoard(NoticeBoardRequestDto noticeBoardRequestDto, User user) {
+        this.title = noticeBoardRequestDto.getTitle();
+        this.author = noticeBoardRequestDto.getAuthor();
+        this.content = noticeBoardRequestDto.getContent();
+        this.user = user;
     }
 
     public void updateNoticeBoard(String title, String author, String content) {

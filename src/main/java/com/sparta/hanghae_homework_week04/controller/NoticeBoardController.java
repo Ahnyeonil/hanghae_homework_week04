@@ -1,40 +1,47 @@
 package com.sparta.hanghae_homework_week04.controller;
 
-import com.sparta.hanghae_homework_week04.dto.NoticeBoardDto;
+import com.sparta.hanghae_homework_week04.dto.NoticeBoardRequestDto;
+import com.sparta.hanghae_homework_week04.security.UserDetailsImpl;
 import com.sparta.hanghae_homework_week04.service.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class NoticeBoardController {
 
     private final NoticeBoardService noticeBoardService;
 
-    @GetMapping("/api/boards")
-    public List<NoticeBoardDto> getAllPosts() {
+    @GetMapping("/boards")
+    public List<NoticeBoardRequestDto> getAllPosts() {
         return noticeBoardService.findAll();
     }
 
-    @PostMapping("/api/write")
-    public void writePost(@RequestBody NoticeBoardDto requestDto) {
-        noticeBoardService.save(requestDto);
+    @PostMapping("/auth/noticeboard/write")
+    public void writePost(@RequestBody NoticeBoardRequestDto requestDto,
+                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        noticeBoardService.save(requestDto, userDetails.getUser());
     }
 
-    @GetMapping("/api/boards/{id}")
-    public NoticeBoardDto getPost(@PathVariable Long id) {
+    @GetMapping("/boards/{id}")
+    public NoticeBoardRequestDto getPost(@PathVariable Long id) {
         return noticeBoardService.getPost(id);
     }
 
-    @PutMapping("/api/boards/{id}")
-    public Long updatePost(@RequestBody NoticeBoardDto requestDto, @PathVariable long id) {
-        return noticeBoardService.update(requestDto, id);
+    @PutMapping("/auth/boards/{id}")
+    public Long updatePost(@RequestBody NoticeBoardRequestDto requestDto,
+                           @PathVariable long id,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return noticeBoardService.update(requestDto, id, userDetails.getUser());
     }
 
-    @DeleteMapping("/api/boards/{id}")
-    public Long deletePost(@PathVariable Long id) {
-        return noticeBoardService.deletePost(id);
+    @DeleteMapping("/auth/boards/{id}")
+    public Long deletePost(@PathVariable Long id,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return noticeBoardService.deletePost(id, userDetails.getUser());
     }
 }

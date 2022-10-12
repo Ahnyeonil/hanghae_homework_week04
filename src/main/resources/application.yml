@@ -3,7 +3,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 # mariadb
   datasource:
@@ -16,7 +16,4 @@ spring:
 #  level:
 #    root: DEBUG
 
-#jwt:
-#  header: Authorization
-#  secret: 7JWI7Jew7J287Leo7JeF6rKw7Zi866Gc65iQMeuTse2VmOqzoOyLtuuLpA==
-#  token-validity-in-seconds: 86400
+jwt.secret: 7JWI7Jew7J287Leo7JF6rKw7Zi866Gc65iQMeuTse2VmOqzoOyLtuuLpA==7JWI7Jew7J287Leo7JeF6rKw7Zi866Gc65iQMeuTse2VmOqzoOyLtuuLpA==

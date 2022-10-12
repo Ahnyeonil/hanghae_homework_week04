@@ -1,7 +1,8 @@
 package com.sparta.hanghae_homework_week04.domain;
 
-import com.sparta.hanghae_homework_week04.dto.CommentDto;
 import com.sparta.hanghae_homework_week04.util.Timestamped;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,34 +10,30 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "comments")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "comments")
 public class Comment extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    private NoticeBoard boardId;
+    @JoinColumn(name = "notice_noard_id")
+    private NoticeBoard noticeBoard;
 
     @ManyToOne
-    @JoinColumn(name = "nickname")
-    private User nickname;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Comment(CommentDto commentDto) {
-        this.comment = commentDto.getComment();
-        this.boardId = commentDto.getBoardId();
-        this.nickname = commentDto.getNickname();
+/*    public Comment(CommentRequestDto commentRequestDto, User user, NoticeBoard noticeBoard) {
+        this.comment = commentRequestDto.getComment();
+        this.noticeBoard = noticeBoard;
+        this.user = user;
 
-    }
-
-    public Comment(String comment, NoticeBoard boardId, User nickname) {
-        this.comment = comment;
-        this.boardId = boardId;
-        this.nickname = nickname;
-    }
+    }*/
 }

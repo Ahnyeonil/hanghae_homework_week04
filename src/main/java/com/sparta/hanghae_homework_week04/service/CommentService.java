@@ -1,9 +1,8 @@
 package com.sparta.hanghae_homework_week04.service;
 
 import com.sparta.hanghae_homework_week04.domain.Comment;
-import com.sparta.hanghae_homework_week04.domain.NoticeBoard;
-import com.sparta.hanghae_homework_week04.dto.CommentDto;
-import com.sparta.hanghae_homework_week04.dto.NoticeBoardDto;
+import com.sparta.hanghae_homework_week04.domain.User;
+import com.sparta.hanghae_homework_week04.dto.CommentRequestDto;
 import com.sparta.hanghae_homework_week04.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,41 +15,58 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    public List<CommentDto> findAll() {
+    public List<CommentRequestDto> findAll() {
 
         List<Comment> comments = commentRepository.findAll();
-        List<CommentDto> commentDtos = new ArrayList<>();
+        List<CommentRequestDto> commentRequestDtos = new ArrayList<>();
 
         for (Comment comment : comments) {
 
-            CommentDto commentDto = new CommentDto(comment);
+            CommentRequestDto commentRequestDto = new CommentRequestDto(comment);
 
-            commentDtos.add(commentDto);
+            commentRequestDtos.add(commentRequestDto);
         }
 
-        return commentDtos;
+        return commentRequestDtos;
     }
 
-    public void save(CommentDto requestDto) {
+    public void save(CommentRequestDto requestDto, User user) {
 
-        Comment comment = new Comment(requestDto);
+        Comment comment = Comment.builder()
+                .comment(requestDto.getComment())
+                .user(user)
+                .noticeBoard(requestDto.getBoardId())
+                .build();
 
         commentRepository.save(comment);
     }
 
-    public Long update(CommentDto requestDto, long requestId) {
+    public Long update(CommentRequestDto requestDto, User user, long requestId) {
 
         Comment comment = commentRepository.findById(requestId).orElseThrow(
                 () -> new RuntimeException("Comment ID does not exist")
         );
 
-        Comment updateComment = new Comment(requestDto.getComment(), requestDto.getBoardId(), requestDto.getNickname());
+        if(!user.getId().equals(comment.getUser().getId())){
+            throw new RuntimeException("댓글 작성자가 Login User와 일치하지 않습니다.");
+        }
 
+        Comment updateComment = Comment.builder()
+                .comment(requestDto.getComment())
+                .build();
 
         return updateComment.getId();
     }
 
-    public Long deleteComment(Long id) {
+    public Long deleteComment(Long id, User user) {
+
+        Comment comment = commentRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Comment ID does not exist")
+        );
+
+        if(!user.getId().equals(comment.getUser().getId())){
+            throw new RuntimeException("댓글 작성자가 Login User와 일치하지 않습니다.");
+        }
 
         commentRepository.deleteById(id);
 

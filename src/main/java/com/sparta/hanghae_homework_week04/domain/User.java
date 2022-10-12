@@ -12,29 +12,34 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Entity
-@Table(name="users")
 @NoArgsConstructor
+@Table(name="users")
 public class User extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z]).{4,12}", message = "닉네임은 최소 4자 이상, 12자 이하 알파벳 대소문자(a-z, A-Z), 숫자(0-9)로 구성됩니다.")
     private String nickname;
 
     @NotNull
-    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z]).{4,32}", message = "비밀번호는 최소 4자 이상, 32자 이하 알파벳 소문자(a-z), 숫자(0-9)로 구성됩니다.")
     private String password;
 
-    @Enumerated(EnumType.STRING)
     private Authority authority;
 
     @Builder
     public User(UserDto userDto) {
         this.nickname = userDto.getNickname();
         this.password = userDto.getPassword();
+        this.authority = userDto.getAuthority();
     }
+
+    public User(String nickname, String password, Authority authority) {
+        this.nickname = nickname;
+        this.password = password;
+        this.authority = authority;
+    }
+
 }
